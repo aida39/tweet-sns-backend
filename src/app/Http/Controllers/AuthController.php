@@ -2,23 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
-    public function store(Request $request)
+    public function __construct()
     {
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+    public function register(Request $request)
+    {
+        User::create([
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => Hash::make($request->password)
         ]);
-        event(new Registered($user));
+        return response()->json(['message' => 'Successfully user create']);
+    }
+    public function login()
+    {
+        $credentials = request(['email', 'password']);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        return $this->respondWithToken($token);
+    }
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+    protected function respondWithToken($token)
+    {
         return response()->json([
-            'message' => 'User created successfully',
-        ], 201);
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
     }
 }
