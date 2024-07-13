@@ -17,4 +17,6 @@ use App\Http\Controllers\CommentController;
 */
 
 Route::apiResource('/post', PostController::class);
-Route::apiResource('/comment', CommentController::class);
+Route::apiResource('/comment', CommentController::class)->only([
+    'store', 'show'
+]);
