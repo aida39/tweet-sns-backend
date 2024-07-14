@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,14 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::apiResource('/post', PostController::class);
+
 Route::apiResource('/comment', CommentController::class)->only([
     'store', 'show'
 ]);
+
+Route::post('/like', [LikeController::class, 'store']);
+Route::delete('/like/{id}', [LikeController::class, 'destroy']);
+
 Route::group([
     'middleware' => ['auth:api'],
     'prefix' => 'auth'
