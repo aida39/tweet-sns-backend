@@ -9,7 +9,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $items = Post::all();
+        $items = Post::with('user')->get();
         return response()->json([
             'data' => $items
         ], 200);
@@ -25,7 +25,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $item = Post::find($post);
+        $item = Post::with('user')->find($post);
         if ($item) {
             return response()->json([
                 'data' => $item

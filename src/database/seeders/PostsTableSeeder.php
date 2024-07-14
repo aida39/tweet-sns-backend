@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Comment;
+use App\Models\Post;
 
-class CommentsTableSeeder extends Seeder
+class PostsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,26 +17,23 @@ class CommentsTableSeeder extends Seeder
     {
         $param = [
             'user_id' => '1',
-            'post_id' => '1',
-            'content' => 'コメント1',
+            'content' => 'ポスト1',
         ];
-        $comment = new Comment;
-        $comment->fill($param)->save();
-
-        $param = [
-            'user_id' => '1',
-            'post_id' => '1',
-            'content' => 'コメント2',
-        ];
-        $comment = new Comment;
+        $comment = new Post;
         $comment->fill($param)->save();
 
         $param = [
             'user_id' => '2',
-            'post_id' => '1',
-            'content' => 'コメント3',
+            'content' => 'ポスト2',
         ];
-        $comment = new Comment;
+        $comment = new Post;
+        $comment->fill($param)->save();
+
+        $param = [
+            'user_id' => '1',
+            'content' => 'ポスト3',
+        ];
+        $comment = new Post;
         $comment->fill($param)->save();
     }
 }

@@ -29,7 +29,7 @@ class CommentController extends Controller
      */
     public function show($post_id)
     {
-        $items = Comment::where('post_id', $post_id)->get();
+        $items = Comment::with('user')->where('post_id', $post_id)->get();
         if ($items->isNotEmpty()) {
             return response()->json([
                 'data' => $items

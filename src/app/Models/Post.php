@@ -14,4 +14,9 @@ class Post extends Model
     public static $rules = array(
         'content' => 'required',
     );
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
