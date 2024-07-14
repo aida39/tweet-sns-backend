@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -15,7 +16,9 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $item = Comment::create($request->all());
+        $item = $request->all();
+        $item['user_id'] = Auth::id();
+        Comment::create($item);
         return response()->json([
             'data' => $item
         ], 201);
@@ -29,7 +32,7 @@ class CommentController extends Controller
      */
     public function show($post_id)
     {
-        $items = Comment::with('user')->where('post_id', $post_id)->get();
+        $items = Comment::where('post_id', $post_id)->with('user')->get();
         if ($items->isNotEmpty()) {
             return response()->json([
                 'data' => $items

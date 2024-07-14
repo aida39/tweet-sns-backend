@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -17,7 +18,9 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $item = Post::create($request->all());
+        $item = $request->all();
+        $item['user_id'] =Auth::id();
+        Post::create($item);
         return response()->json([
             'data' => $item
         ], 201);
@@ -25,7 +28,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $item = Post::with('user')->find($post);
+        $item = Post::where('id', $post->id)->with('user')->find($post);
         if ($item) {
             return response()->json([
                 'data' => $item
