@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $items = Post::with('user')->get();
+        $items = Post::with('user','like')->get();
         return response()->json([
             'data' => $items
         ], 200);
@@ -28,7 +28,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $item = Post::where('id', $post->id)->with('user')->find($post);
+        $item = Post::where('id', $post->id)->with('user','like')->find($post);
         if ($item) {
             return response()->json([
                 'data' => $item
