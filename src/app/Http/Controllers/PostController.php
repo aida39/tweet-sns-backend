@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -16,7 +17,7 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         $item = $request->all();
         $item['user_id'] =Auth::id();
